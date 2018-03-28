@@ -1,0 +1,25 @@
+
+  <button catchtap="showErrModal">错误提示</button>
+  <button catchtap="showSuccessModal">成功提示</button>
+  <button catchtap="showConfirmModal">带确定/取消</button>
+  <button catchtap="showLoading">加载数据</button>
+  <button catchtap="showLoadingSuccess">加载数据成功</button>
+  <button catchtap="showLoadingError">加载数据失败</button>
+  <button catchtap="showLoadingToast">加载数据后toast提醒</button>
+  <button catchtap="showToast">toast提醒</button>
+  
+  <view  wx:if="{{!$iviewer$Iconfig._hide}}" class="mask" catchtap="$iviewer$touchMaskCancel">
+    <view wx:if="{{$iviewer$Iconfig.type=='modal'}}" class="modal {{$iviewer$_ready_to_hide?'bounceOutDown':'shake'}}">
+      <image wx:if="{{$iviewer$Iconfig.icon=='OK'}}" class="icon" src="../iviewer/icon/success.png"/>
+      <image wx:elif="{{$iviewer$Iconfig.icon=='ERR'}}" class="icon" src="../iviewer/icon/error.png"/>
+      <image wx:elif="{{$iviewer$Iconfig.icon=='LOAD'}}" class="icon" src="../iviewer/icon/loading.png"/>
+      <text wx:if="{{$iviewer$Iconfig.title}}" class="title">{{$iviewer$Iconfig.title}}</text>
+      <text wx:if="{{$iviewer$Iconfig.content}}" class="content">{{$iviewer$Iconfig.content}}</text>
+      <view class="btn-group">
+        <view wx:if="{{$iviewer$Iconfig.confirmText}}" class="btn" catchtap="$iviewer$confirmEvent">{{$iviewer$Iconfig.confirmText}}</view>
+        <view wx:if="{{$iviewer$Iconfig.cancelText}}" class="btn btn-warning" catchtap="$iviewer$cancelEvent">{{$iviewer$Iconfig.cancelText}}</view>
+      </view>
+    </view>
+    <view wx:elif="{{$iviewer$Iconfig.type=='toast'}}" class="toast {{$iviewer$_ready_to_hide?'bounceOutDown':'shake'}}">{{$iviewer$Iconfig.title}}
+    </view>
+  </view>

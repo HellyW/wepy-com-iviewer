@@ -1,0 +1,206 @@
+<style lang="less">
+@import "./animate";
+  .mask{
+    width:100vw;
+    height:100vh;
+    position:fixed;
+    z-index:999999;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.6);
+    text-align:center;
+    line-height:100vh;
+    .modal{
+      display:inline-block;
+      width:550rpx;
+      background:#fff;
+      box-sizing:border-box;
+      padding:30rpx 20rpx;
+      vertical-align: middle;
+      border-radius:10rpx;
+      line-height:0;
+      .icon{
+        width:140rpx;
+        height:140rpx;
+        margin:10rpx;
+      }
+      .title{
+        display:block;
+        width:100%;
+        font-weight:700;
+        white-space:nowarp;
+        text-align:center;
+        height:50rpx;
+        line-height:50rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        padding:20rpx 0;
+        text-overflow: ellipsis;
+      }
+      .content{
+        width:90%;
+        display:block;
+        max-height:90rpx;
+        margin:10rpx auto;
+        line-height:40rpx;
+        font-size:30rpx;
+        font-weight:200;
+        text-align:left;
+        text-indent:60rpx;
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .btn-group{
+        width:100%;
+        text-align:center;
+        .btn{
+          display:inline-block;
+          width:120rpx;
+          height:60rpx;
+          color:#fff;
+          font-size:30rpx;
+          line-height:60rpx;
+          background:#027204;
+          margin:10rpx;
+          border-radius:5rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          letter-spacing:8rpx;
+          &.btn-warning{
+            background:#C35B47;
+          }
+        }
+      }
+    }
+    .toast{
+      display:inline-block;
+      height:40rpx;
+      border-radius:10rpx;
+      background:rgba(0,0,0,0.8);
+      color:#fff;
+      font-size:30rpx;
+      line-height:40rpx;
+      padding:10rpx 20rpx;
+      max-width:80vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
+      margin:60rpx auto;
+    }
+  }
+</style>
+<template>
+  <view wx:if="{{!Iconfig._hide}}" class="mask" @tap.stop="touchMaskCancel">
+    <view wx:if="{{Iconfig.type=='modal'}}" class="modal {{_ready_to_hide?'bounceOutDown':'shake'}}">
+      <image wx:if="{{Iconfig.icon=='OK'}}" class="icon" src="./icon/success.png"></image>
+      <image wx:elif="{{Iconfig.icon=='ERR'}}" class="icon" src="./icon/error.png"></image>
+      <image wx:elif="{{Iconfig.icon=='LOAD'}}" class="icon" src="./icon/loading.png"></image>
+      <text wx:if="{{Iconfig.title}}" class="title">{{Iconfig.title}}</text>
+      <text wx:if="{{Iconfig.content}}" class="content">{{Iconfig.content}}</text>
+      <view class="btn-group">
+        <view wx:if="{{Iconfig.confirmText}}" class="btn" @tap.stop="confirmEvent">{{Iconfig.confirmText}}</view>
+        <view wx:if="{{Iconfig.cancelText}}" class="btn btn-warning" @tap.stop="cancelEvent">{{Iconfig.cancelText}}</view>
+      </view>
+    </view>
+    <view wx:elif="{{Iconfig.type=='toast'}}" class="toast {{_ready_to_hide?'bounceOutDown':'shake'}}">{{Iconfig.title}}
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import _ from 'underscore'
+  export default class Iviewer extends wepy.component {
+    props = {
+      config: Object
+    }
+    computed = {
+      Iconfig: function () {
+        let _config = {
+          // OK   ERR   LOAD
+          'icon': 'OK',
+          'type': 'modal',
+          'title': 'hello iviewer',
+          'content': '',
+          'autoClose': true,
+          'timer': 2000,
+          'hide': true,
+          'confirmText': '',
+          'event': {
+            cancel: function () {
+              console.log('confirm')
+            },
+            confirm: function () {
+              console.log('cancel')
+            }
+          },
+          'cancelText': '',
+          'touchCancel': true
+        }
+        return _.extend({'_hide': true}, _config, this.config || {})
+      }
+    }
+    watch = {
+      config (newVal, oldVal) {
+        if (newVal.hide === oldVal.hide && oldVal.hide) {
+          return
+        }
+        this._ready_to_hide = newVal.hide
+        this.$apply()
+        if (newVal.hide) {
+          setTimeout(() => {
+            this.config._hide = true
+            this.$apply()
+          }, 600)
+        } else {
+          this._setAutoClose()
+          this.config._hide = false
+          this.$apply()
+        }
+      }
+    }
+    data = {
+      _ready_to_hide: false
+    }
+    onLoad() {
+    }
+    _setAutoClose() {
+      if (this.Iconfig.autoClose) {
+        this._autoCloseEvent = setTimeout(() => {
+          this.config.hide = true
+          this.$apply()
+        }, this.Iconfig.timer)
+      }
+    }
+    _clearAutoClose() {
+      clearTimeout(this._autoCloseEvent)
+    }
+    methods = {
+      // 补充：
+      // 除了使用touchCancel触发touchMaskCancel会被动关闭窗口，其他需在confirm和cancel事件中主动关闭窗口
+      touchMaskCancel: function () {
+        if (this.Iconfig.touchCancel) {
+          this._clearAutoClose()
+          this.Iconfig.event.cancel()
+          this.config.hide = true
+          this.$apply()
+          this.$emit('cancel')
+        }
+      },
+      confirmEvent: function () {
+        this.Iconfig.event.confirm()
+        this.$emit('confirm')
+      },
+      cancelEvent: function () {
+        this.config.hide = true
+        this.Iconfig.event.cancel()
+        this.$emit('cancel')
+      }
+    }
+  }
+</script>

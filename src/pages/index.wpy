@@ -1,0 +1,121 @@
+<style lang="less">
+  button{
+    display:inline-block;
+    font-size:30rpx;
+    padding:10rpx 20rpx;
+    margin:10rpx;
+  }
+</style>
+<template>
+  <button @tap.stop="showErrModal">错误提示</button>
+  <button @tap.stop="showSuccessModal">成功提示</button>
+  <button @tap.stop="showConfirmModal">带确定/取消</button>
+  <button @tap.stop="showLoading">加载数据</button>
+  <button @tap.stop="showLoadingSuccess">加载数据成功</button>
+  <button @tap.stop="showLoadingError">加载数据失败</button>
+  <button @tap.stop="showLoadingToast">加载数据后toast提醒</button>
+  <button @tap.stop="showToast">toast提醒</button>
+  <iviewer :config.sync="__wepy_iviewer_settings"></iviewer>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import iviewer from '../iviewer/iviewer'
+  import iviewerHelper from '../iviewer/iviewerHelper'
+  export default class Index extends wepy.page {
+    config = {
+    }
+    data = {
+      '__wepy_iviewer_settings': {}
+    }
+    components = {
+      iviewer
+    }
+    methods = {
+      showErrModal: function () {
+        iviewerHelper.err(this, {
+          'title': '提交失败',
+          'content': '网络错误，请稍后重试'
+        }, {
+          cancel: function () {
+            console.log('取消了')
+          }
+        })
+      },
+      showSuccessModal: function () {
+        iviewerHelper.ok(this, {
+          'title': '提交成功',
+          'content': '您已成功提交申请表'
+        })
+      },
+      showConfirmModal: function () {
+        let self = this
+        iviewerHelper.ok(this, {
+          'title': '确认提交申请表吗',
+          'content': '一经提交不可撤销，您确定需要申请吗？',
+          'confirmText': '是',
+          'cancelText': '否'
+        }, {
+          confirm: function () {
+            iviewerHelper.toast(self, '已提交~')
+          },
+          cancel: function () {
+            iviewerHelper.toast(self, '已取消~')
+          }
+        })
+      },
+      showLoading: function () {
+        iviewerHelper.loading(this, {
+          'title': '努力加载中',
+          'content': '正在为您提交申请表'
+        })
+        // 如无正确、错误提示，loading需在数据处理结束iviewerHelper.close(this)来关闭
+        setTimeout(() => {
+          iviewerHelper.close(this)
+        }, 2000)
+      },
+      showLoadingSuccess: function () {
+        iviewerHelper.loading(this, {
+          'title': '努力加载中',
+          'content': '正在为您提交申请表'
+        })
+        // 模拟数据处理结束
+        setTimeout(() => {
+          iviewerHelper.ok(this, {
+            'title': '提交成功',
+            'content': '您已成功提交申请表'
+          })
+        }, 2000)
+      },
+      showLoadingError: function () {
+        iviewerHelper.loading(this, {
+          'title': '努力加载中',
+          'content': '正在为您提交申请表'
+        })
+        // 模拟数据处理结束
+        setTimeout(() => {
+          iviewerHelper.err(this, {
+            'title': '提交失败',
+            'content': '网络错误，请稍后重试'
+          })
+        }, 2000)
+      },
+      showLoadingToast: function () {
+        iviewerHelper.loading(this, {
+          'title': '努力加载中',
+          'content': '正在为您提交申请表'
+        })
+        // 模拟数据处理结束
+        setTimeout(() => {
+          iviewerHelper.toast(this, '提交失败，请稍后重试')
+        }, 2000)
+      },
+      showToast: function () {
+        // toast建议传入不超过15个汉字，此处演示超长文本
+        iviewerHelper.toast(this, '我是一个超级长的文本toast，长到超过15个汉字！不够？再补充一点吧！差不多了')
+      }
+    }
+    onLoad() {
+    }
+  }
+</script>

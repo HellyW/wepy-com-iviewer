@@ -1,0 +1,16 @@
+
+  <view  wx:if="{{!Iconfig._hide}}" class="mask" catchtap="touchMaskCancel">
+    <view wx:if="{{Iconfig.type=='modal'}}" class="modal {{_ready_to_hide?'bounceOutDown':'shake'}}">
+      <image wx:if="{{Iconfig.icon=='OK'}}" class="icon" src="./icon/success.png"/>
+      <image wx:elif="{{Iconfig.icon=='ERR'}}" class="icon" src="./icon/error.png"/>
+      <image wx:elif="{{Iconfig.icon=='LOAD'}}" class="icon" src="./icon/loading.png"/>
+      <text wx:if="{{Iconfig.title}}" class="title">{{Iconfig.title}}</text>
+      <text wx:if="{{Iconfig.content}}" class="content">{{Iconfig.content}}</text>
+      <view class="btn-group">
+        <view wx:if="{{Iconfig.confirmText}}" class="btn" catchtap="confirmEvent">{{Iconfig.confirmText}}</view>
+        <view wx:if="{{Iconfig.cancelText}}" class="btn btn-warning" catchtap="cancelEvent">{{Iconfig.cancelText}}</view>
+      </view>
+    </view>
+    <view wx:elif="{{Iconfig.type=='toast'}}" class="toast {{_ready_to_hide?'bounceOutDown':'shake'}}">{{Iconfig.title}}
+    </view>
+  </view>
