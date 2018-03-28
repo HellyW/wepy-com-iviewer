@@ -1,9 +1,9 @@
 ##  如何查看demo
 
-### 直接使用开发者打包文件：
+### 1.直接使用开发者打包文件：
 ####  下载dist文件夹，用微信开发工具打开
 
-### 自行编译
+### 2.自行编译
 ```console
   npm install
 ``` 
@@ -12,8 +12,6 @@
 ``` 
 ####  然后将dist文件夹用微信开发工具打开
 
-##### 如果出现一下错误，可参考一下步骤修改underScore.js
-<img src="./screenshot/screenshot4.png"/>
 
 ##  关于iviewer
 
@@ -63,6 +61,8 @@
 ######  确认文本 String 
 ##### cancelText:
 ######  取消文本 String
+##### touchCancel:
+######  允许触摸关闭弹窗 Boolean【iviewerHelper中loading默认关闭触摸弹窗，需在数据加载完手动关闭】
 
 
 
