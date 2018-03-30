@@ -46,7 +46,7 @@ const _loading_setting = {
   'touchCancel':false
 }
 
-function  _checkIsAutoClose(config) {
+function  _checkIsAutoClose(config = {}) {
   if(config.confirmText || config.cancelText ){
     config.autoClose = false
   }
@@ -54,19 +54,19 @@ function  _checkIsAutoClose(config) {
 }
 
 // 显示正确弹窗
-function showSucess($vm,config,cbObject=null) {
+function showSucess($vm,config = {},cbObject=null) {
   $vm.__wepy_iviewer_settings = _.extend({},_base_setting,_success_setting,_checkIsAutoClose(config),{'event':_.extend({},_cbObject,cbObject)},_final_modal_setting,_final_setting)
   $vm.$apply()
 }
 
 // 显示错误弹窗
-function showError($vm,config,cbObject=null) {
+function showError($vm,config = {},cbObject=null) {
   $vm.__wepy_iviewer_settings = _.extend({},_base_setting,_error_setting,_checkIsAutoClose(config),{'event':_.extend({},_cbObject,cbObject)},_final_modal_setting,_final_setting)
   $vm.$apply()
 }
 
 // 显示加载弹窗
-function showLoading($vm,config,cbObject=null) {
+function showLoading($vm,config = {},cbObject=null) {
   $vm.__wepy_iviewer_settings = _.extend({},_base_setting,_loading_setting,_checkIsAutoClose(config),{'event':_.extend({},_cbObject,cbObject)},_final_modal_setting,_final_setting)
   $vm.$apply()
 }
