@@ -1,3 +1,8 @@
+## 同类组件
+#### [可搜索可快捷导航的省市区地址选择器](https://github.com/wahao/wepy-com-icityer)
+#### [自定义状态系统导航栏，可监听返回事件](https://github.com/wahao/wepy-com-inaver)
+
+
 ##  如何查看demo
 
 ### 1.直接使用开发者打包文件：

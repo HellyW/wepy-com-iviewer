@@ -65,6 +65,12 @@ function showError($vm,config = {},cbObject=null) {
   $vm.$apply()
 }
 
+// 显示一般弹窗
+function showModal($vm,config = {},cbObject=null) {
+  $vm.__wepy_iviewer_settings = _.extend({},_base_setting,_checkIsAutoClose(config),{'event':_.extend({},_cbObject,cbObject)},_final_modal_setting,_final_setting)
+  $vm.$apply()
+}
+
 // 显示加载弹窗
 function showLoading($vm,config = {},cbObject=null) {
   $vm.__wepy_iviewer_settings = _.extend({},_base_setting,_loading_setting,_checkIsAutoClose(config),{'event':_.extend({},_cbObject,cbObject)},_final_modal_setting,_final_setting)
@@ -86,6 +92,7 @@ function close($vm) {
 module.exports = {
   ok: showSucess,
   err: showError,
+  show: showModal,
   toast: showToast,
   loading: showLoading,
   close: close

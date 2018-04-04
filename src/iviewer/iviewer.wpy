@@ -101,6 +101,7 @@
       <image wx:if="{{Iconfig.icon=='OK'}}" class="icon" src="./icon/success.png"></image>
       <image wx:elif="{{Iconfig.icon=='ERR'}}" class="icon" src="./icon/error.png"></image>
       <image wx:elif="{{Iconfig.icon=='LOAD'}}" class="icon" src="./icon/loading.png"></image>
+      <image wx:elif="{{Iconfig.icon!=='NONE' && Iconfig.icon!==''}}" class="icon" src="{{Iconfig.icon}}"></image>
       <text wx:if="{{Iconfig.title}}" class="title">{{Iconfig.title}}</text>
       <text wx:if="{{Iconfig.content}}" class="content">{{Iconfig.content}}</text>
       <view class="btn-group">
